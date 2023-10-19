@@ -1,0 +1,90 @@
+version: '3.5'
+
+services:
+  postgres:
+    build:
+      context: ./
+      dockerfile: docker_files/postgres.dockerfile
+    image: "postgres-image"
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: 
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+      PGDATA: /data/postgres_data
+    volumes:
+      - dbtuto:/data/postgres_data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  database_service:
+    build: 
+      context: ./
+      dockerfile: docker_files/database_service.dockerfile
+    image: database_service-image
+    container_name: database_service_container
+    environment:
+      PORT: 8002
+    ports:
+      - "8002:8002"
+    restart: unless-stopped
+
+  parsing_service:
+    build: 
+      context: ./
+      dockerfile: docker_files/parsing_service.dockerfile
+    image: parsing_service-image
+    container_name: parsing_service_container
+    environment:
+      PORT: 8004
+    ports:
+      - "8004:8004"
+    restart: unless-stopped
+
+  excel_service:
+    build: 
+      context: ./
+      dockerfile: docker_files/excel_service.dockerfile
+    image: excel_service-image
+    container_name: excel_service_container
+    environment:
+      PORT: 8005
+    ports:
+      - "8005:8005"
+    restart: unless-stopped
+
+  # tg_bot_service:
+  #   build: 
+  #     context: ./
+  #     dockerfile: docker_files/tg_bot_service.dockerfile
+  #   image: tg_bot_service-image
+  #   container_name: tg_bot_service_container
+  #   environment:
+  #     PORT: 8007
+  #     IS_DOCKER: 1
+  #     TG_TOKEN: ""
+  #   ports:
+  #     - "8007:8007"
+  #   restart: unless-stopped
+
+  updater_service:
+    build: 
+      context: ./
+      dockerfile: docker_files/updater_service.dockerfile
+    image: updater_service-image 
+    container_name: updater_service_container
+    environment:
+      PORT: 8006
+    ports:
+      - "8006:8006"
+    restart: unless-stopped
+
+volumes:
+    dbtuto:
+      external: true
+
+networks:
+  default:
+    name: cstm_ntwrk
+    external: true

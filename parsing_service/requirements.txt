@@ -1,0 +1,5 @@
+fastapi==0.103.0
+selenium==4.12.0
+uvicorn==0.23.2
+aenum==3.1.15
+httpx==0.24.1
